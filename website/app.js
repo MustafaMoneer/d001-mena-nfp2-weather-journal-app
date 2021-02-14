@@ -28,7 +28,7 @@ function performAction(e) {
     getWeather(baseURL, zipCode, apiKey)
         .then(function (addData) {
             postData('/add', {
-                temp: addData.temp,
+                temp: addData.main.temp,
                 date: newDate,
                 content: content
             });
