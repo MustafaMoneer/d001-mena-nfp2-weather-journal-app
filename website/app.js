@@ -22,21 +22,23 @@ function performAction(e) {
                 content: content
             });
         })
-        .then(function () {
-            getData('/all')
-                .then(function (allData) {
-                    console.log(allData + 'data');
-                    try {
-                        document.getElementById('temp').innerHTML = allData.temp;
-                        document.getElementById('date').innerHTML = allData.date;
-                        document.getElementById('content').innerHTML = allData.content;
-                        console.log(allData);
-                    } catch (error) {
-                        console.log("GetData Error: " + error);
-                    }
-                })
-        });
+        .then(
+            updateUI()
+        );
 };
+
+const updateUI = async () => {
+const request = await fetch('/all');
+    try {
+        const allData = await request.json();
+        document.getElementById('temp').innerHTML = allData.temp;
+        document.getElementById('date').innerHTML = allData.date;
+        document.getElementById('content').innerHTML = allData.content;
+        console.log(allData);
+    } catch (error) {
+        console.log("Error", error);
+    }
+}
 
 const getWeather = async (baseURL, zipCode, apiKey) => {
     const res = await fetch(baseURL + zipCode + apiKey);
