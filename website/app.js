@@ -1,6 +1,6 @@
 /* Global Variables */
 const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
-const apiKey = 'c0f3fe98f7fc16333431957317986ced';
+const apiKey = '&appid=c0f3fe98f7fc16333431957317986ced&units=imperial';
 
 // Create a new date instance dynamically with JS
 let d = new Date();
@@ -8,6 +8,17 @@ let newDate = d.getMonth() + '.' + d.getDate() + '.' + d.getFullYear();
 
 // Event listener to add function to existing HTML DOM element
 document.getElementById('generate').addEventListener('click', performAction);
+
+const getWeather = async (baseURL, zipCode, apiKey) => {
+    const res = await fetch(`${baseURL}${zipCode}${apiKey}`);
+    try {
+        const addData = await res.json();
+        console.log(addData);
+        return addData;
+    } catch (error) {
+        console.log('Weather Data Error', error);
+    }
+};
 
 // Functions called by event listener
 function performAction(e) {
@@ -22,9 +33,9 @@ function performAction(e) {
                 content: content
             });
         })
-        .then(
+        .then(function () {
             updateUI()
-        );
+        });
 };
 
 const updateUI = async () => {
@@ -40,16 +51,6 @@ const request = await fetch('/all');
     }
 }
 
-const getWeather = async (baseURL, zipCode, apiKey) => {
-    const res = await fetch(baseURL + zipCode + apiKey);
-    try {
-        const addData = await res.json();
-        console.log(addData);
-        return addData;
-    } catch (error) {
-        console.log('Weather Data Error', error);
-    }
-};
 
 /* Async POST */
 const postData = async (url = '', data = {}) => {
